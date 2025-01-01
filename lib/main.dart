@@ -1,44 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_dash_board/views/desktop_dashboard.dart';
+import 'package:responsive_dash_board/views/mobile_dashboard.dart';
+import 'package:responsive_dash_board/views/tablet_dashboard.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ResponsiveDashboard());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class ResponsiveDashboard extends StatelessWidget {
+  const ResponsiveDashboard({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Responsive Dashboard',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const DashboardView(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class DashboardView extends StatelessWidget {
+  const DashboardView({
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Responsive Dashboard"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
+      backgroundColor: Colors.grey[200],
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          if (constraints.maxWidth < 600) {
+            return const MobileDashboard();
+          } else if (constraints.maxWidth < 900) {
+            return const TabletDashboard();
+          } else {
+            return const DesktopDashboard();
+          }
+        },
       ),
     );
   }
